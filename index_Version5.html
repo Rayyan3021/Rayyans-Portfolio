@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Rayyan Dawood</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-bg: #000;
+      --card-bg: #000;
+      --accent: #e32636;
+      --accent-hover: #ff4455;
+      --text: #e32636;
+      --shadow: 0 4px 24px 0 rgba(227,38,54,0.08);
+      --transition: 0.18s cubic-bezier(.77,0,.18,1);
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--main-bg);
+      color: var(--text);
+      font-family: 'Montserrat', Arial, sans-serif;
+      min-height: 100vh;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 0 10px;
+    }
+    .container {
+      margin-top: 80px;
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 44px 30px 36px 30px;
+      position: relative;
+      z-index: 1;
+      border: 2.5px solid var(--accent);
+    }
+    .main-title {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      margin-top: 0;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+    }
+    .main-divider {
+      border: none;
+      border-top: 2.5px solid var(--accent);
+      margin: 0 0 18px 0;
+      width: 100%;
+      opacity: 1;
+    }
+    .subtitle {
+      font-size: 1.36rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      font-weight: 400;
+      line-height: 1.28;
+    }
+    .dotted {
+      border: none;
+      border-top: 2px dotted var(--accent);
+      width: 100%;
+      opacity: 0.8;
+      margin: 10px 0 18px 0;
+    }
+    .subheading {
+      font-size: 1.10rem;
+      color: var(--accent);
+      margin: 0 0 12px 0;
+      font-weight: 400;
+    }
+    .quick-blurb {
+      color: var(--accent);
+      margin-bottom: 18px;
+      font-size: 1.03rem;
+    }
+    ul.links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    ul.links li {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px 0 rgba(227,38,54,0.10);
+      background: transparent;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    ul.links li:hover, ul.links li:focus-within {
+      transform: translateY(-2px) scale(1.022);
+      box-shadow: 0 5px 24px 0 var(--accent-hover);
+    }
+    .link-btn {
+      display: flex;
+      align-items: center;
+      color: var(--accent);
+      font-size: 1.18rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 17px 20px;
+      transition: color var(--transition), background var(--transition), border-color var(--transition);
+      background: none;
+      border: 2px solid var(--accent);
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      outline: none;
+      letter-spacing: 0.01em;
+      justify-content: flex-start;
+      border-radius: 10px;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .link-btn:active, .link-btn:focus {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent-hover);
+    }
+    .link-btn span {
+      flex: 1;
+      margin-left: 0;
+    }
+    /* Robot Rayyan Bubble */
+    .robot-bubble {
+      position: fixed;
+      bottom: 38px;
+      right: 38px;
+      width: 82px;
+      height: 82px;
+      z-index: 1200;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 4px 24px 0 var(--accent), 0 0 0 4px #e3263630;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: box-shadow 0.22s cubic-bezier(.77,0,.18,1), transform 0.15s;
+      border: 3px solid #fff;
+    }
+    .robot-bubble:hover {
+      box-shadow: 0 8px 36px 0 var(--accent-hover), 0 0 0 8px #e3263650;
+      transform: scale(1.10) rotate(-6deg);
+    }
+    .robot-logo {
+      width: 67px;
+      height: 67px;
+      border-radius: 50%;
+      display: block;
+      object-fit: cover;
+      background: #fff;
+      box-shadow: 0 2px 8px 0 #e3263622;
+    }
+    .robot-modal-backdrop {
+      display: none;
+      position: fixed;
+      z-index: 1300;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    .robot-modal-backdrop.active {
+      display: flex;
+    }
+    .robot-modal {
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 18px;
+      box-shadow: 0 6px 40px 0 var(--accent);
+      width: 400px;
+      max-width: 98vw;
+      height: 600px;
+      max-height: 85vh;
+      margin: 0 38px 120px 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: popin 0.22s cubic-bezier(.77,0,.18,1);
+    }
+    .robot-modal .close-btn {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      transition: color 0.16s;
+      z-index: 10;
+    }
+    .robot-modal .close-btn:hover {
+      color: #fff;
+    }
+    .robot-modal-header {
+      padding: 20px 20px 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1.5px solid var(--accent);
+    }
+    .robot-modal-header img {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      border: 2px solid #fff;
+    }
+    .robot-modal-title {
+      color: var(--accent);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .robot-modal-body {
+      flex: 1;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+      border-radius: 0 0 16px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: stretch;
+    }
+    .robot-modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #000;
+      border-radius: 0 0 16px 16px;
+      flex: 1;
+      display: block;
+    }
+    /* Activities Popup */
+    .activities-popup-backdrop {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.66);
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .activities-popup-backdrop.active {
+      display: flex;
+    }
+    .activities-popup {
+      background: var(--card-bg);
+      color: var(--accent);
+      border-radius: 16px;
+      box-shadow: 0 6px 40px 0 var(--accent);
+      padding: 28px 20px 20px 20px;
+      min-width: 290px;
+      max-width: 97vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      border: 2px solid var(--accent);
+      animation: popin 0.2s cubic-bezier(.77,0,.18,1);
+    }
+    @keyframes popin {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .activities-popup h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.25rem;
+      color: var(--accent);
+      text-align: left;
+      font-weight: 700;
+    }
+    .activities-list {
+      margin: 0;
+      padding: 0 0 0 15px;
+      color: var(--accent);
+      font-size: 1.07rem;
+    }
+    .activities-popup .close-btn {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 1.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      transition: color 0.16s;
+    }
+    .activities-popup .close-btn:hover {
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .robot-bubble {
+        right: 16px;
+        bottom: 16px;
+        width: 65px;
+        height: 65px;
+      }
+      .robot-logo {
+        width: 53px;
+        height: 53px;
+      }
+      .container {
+        max-width: 99vw;
+        padding: 38px 6vw 26px 6vw;
+      }
+      .robot-modal {
+        width: 98vw;
+        margin: 0 2vw 72px 0;
+        min-width: 0;
+        max-width: 99vw;
+        height: 60vh;
+        max-height: 75vh;
+      }
+      .robot-modal-header img {
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main-title">Rayyan Dawood</div>
+    <hr class="main-divider">
+    <div class="subtitle">Building AI that actually matters.</div>
+    <hr class="dotted">
+    <div class="subheading">
+      Rayyan Dawood | 16 | Building real AI | GA | Pakistani roots | Parkview HS | Reseller | Tutor | Coding GPTs
+    </div>
+    <div class="quick-blurb">
+      Quick access to my credentials and work:
+    </div>
+    <ul class="links">
+      <li>
+        <a class="link-btn" href="https://chatgpt.com/g/g-685b1c6f49748191974f5a157a63c690-mindblossom" target="_blank" rel="noopener">
+          <span>MindBlossom</span>
+        </a>
+      </li>
+      <li>
+        <a class="link-btn" href="https://chatgpt.com/g/g-68716b0ae638819193f62e9bc1dcf79e-chessmate" target="_blank" rel="noopener">
+          <span>ChessMate</span>
+        </a>
+      </li>
+      <li>
+        <a class="link-btn" href="https://docs.google.com/document/d/13AvD1VtkenCqeAnxrYsgrbc5Qcyx8m1n6GV0Uf-ojnE/edit?usp=drivesdk" target="_blank" rel="noopener">
+          <span>AI Meets Empathy Research</span>
+        </a>
+      </li>
+      <li>
+        <a class="link-btn" href="https://docs.google.com/document/d/17-bSNt5OmoQYQZuF2nk_fWFZtFH-rOhCmrCR0T-urNQ/edit?usp=drivesdk" target="_blank" rel="noopener">
+          <span>Resume</span>
+        </a>
+      </li>
+      <li>
+        <a class="link-btn" href="https://docs.google.com/document/d/15pdHR6NP7gfgHXxrx-PCPtVJd-0NjL-_0XFyqiwdV0Y/edit?usp=drivesdk" target="_blank" rel="noopener">
+          <span>My Story</span>
+        </a>
+      </li>
+      <li>
+        <button class="link-btn" id="activities-btn" type="button">
+          <span>Additional Activities</span>
+        </button>
+      </li>
+      <li>
+        <a class="link-btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=rayyandawood49@gmail.com" target="_blank" rel="noopener">
+          <span>Contact</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Additional Activities Popup -->
+  <div class="activities-popup-backdrop" id="activities-popup-backdrop" tabindex="-1">
+    <div class="activities-popup" role="dialog" aria-modal="true" aria-labelledby="activities-title">
+      <button class="close-btn" id="activities-close-btn" title="Close">&times;</button>
+      <h2 id="activities-title">Additional Activities</h2>
+      <ol class="activities-list" id="activities-list">
+        <!-- Filled by JS below -->
+      </ol>
+    </div>
+  </div>
+
+  <!-- Floating Robot Rayyan Bubble -->
+  <div class="robot-bubble" id="robot-bubble" title="Robot Rayyan">
+    <img src="logo-rayyan.png" class="robot-logo" alt="Robot Rayyan Logo" />
+  </div>
+  <!-- Robot Rayyan Modal (loads your GPT in iframe) -->
+  <div class="robot-modal-backdrop" id="robot-modal-backdrop" tabindex="-1">
+    <div class="robot-modal" role="dialog" aria-modal="true" aria-labelledby="robot-modal-title">
+      <button class="close-btn" id="robot-modal-close-btn" title="Close">&times;</button>
+      <div class="robot-modal-header">
+        <img src="logo-rayyan.png" alt="Robot Rayyan" />
+        <span class="robot-modal-title" id="robot-modal-title">Robot Rayyan</span>
+      </div>
+      <div class="robot-modal-body" id="robot-modal-body">
+        <iframe
+          id="rayyan-gpt-iframe"
+          class="robot-modal-iframe"
+          src="https://chatgpt.com/g/g-68771ca84f1c8191905554744a3d31ab"
+          title="Robot Rayyan GPT"
+          allow="clipboard-write; clipboard-read; encrypted-media"
+          sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
+        ></iframe>
+        <div id="iframe-blocked" style="display:none; color:#e32636; background:#111; padding:25px; text-align:center;">
+          Sorry, your browser does not allow embedding ChatGPT here.<br>
+          <a href="https://chatgpt.com/g/g-68771ca84f1c8191905554744a3d31ab" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;font-weight:bold;">Open Robot Rayyan in a new tab</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Activities
+    const activities = [
+      "Summer renew digital internship",
+      "Published my own mental wellness GPT called MindBlossom on OpenAI store which now has 300+ user chats and still growing",
+      "Published a GPT on OpenAI store that teaches kids how to play chess which now has 100+ chats called ChessMate",
+      "Made an AI chatbot and posted it on my website that talks like me and gives information about me called Robot Rayyan",
+      "Built T-Mobile a custom GPT for their customers called T-Bot (requested by a T-Mobile employee)",
+      "Math Tutor-Kumon learning center",
+      "Vice president of Schools chess club",
+      "250+ volunteer hours at local mosque",
+      "Self conducted a research on Ai and its ability to be empathetic",
+      "100+ hours of community service",
+      "Flipped products and made $2000 in profit",
+      "Certificate in IBM SkillsBuild topic of AI and machine learning",
+      "Google IT coursera certificate",
+      "IBM product management coursera certificate",
+      "Created websites for people and their personal use",
+      "Took many classes over the summer and online on acellus academy in order to get my gpa back up due to health issues causing a dip in grade point average (knee surgery and trigeminal neuralgia)",
+      "Used my knowledge from googles AI course and helped renew digital grow in clients",
+      "Created a personal website at RayyanDawood.com",
+      "Founder of AI Learning Club at Parkview Highschool",
+      "Offered a free course at my mosque for students to learn more about AI",
+      "Graduated high school at 16 years old"
+    ];
+    // Fill the activities list
+    const listEl = document.getElementById('activities-list');
+    activities.forEach(activity => {
+      const li = document.createElement('li');
+      li.textContent = activity;
+      if(activity === "— Upcoming —") {
+        li.style.listStyle = "none";
+        li.style.margin = "18px 0 0 0";
+        li.style.fontWeight = "bold";
+        li.style.color = "#e32636";
+        li.style.fontSize = "1.1rem";
+      }
+      listEl.appendChild(li);
+    });
+
+    // Activities popup (single click)
+    const activitiesBtn = document.getElementById('activities-btn');
+    const activitiesBackdrop = document.getElementById('activities-popup-backdrop');
+    const activitiesCloseBtn = document.getElementById('activities-close-btn');
+    activitiesBtn.onclick = () => {
+      activitiesBackdrop.classList.add('active');
+      activitiesCloseBtn.focus();
+      document.body.style.overflow = 'hidden';
+    };
+    activitiesCloseBtn.onclick = () => {
+      activitiesBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
+      activitiesBtn.focus();
+    };
+    activitiesBackdrop.onclick = (e) => {
+      if (e.target === activitiesBackdrop) {
+        activitiesBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+        activitiesBtn.focus();
+      }
+    };
+    activitiesBackdrop.addEventListener('keydown', (e)=> {
+      if (e.key === 'Escape') {
+        activitiesBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+        activitiesBtn.focus();
+      }
+    });
+
+    // Robot Rayyan GPT modal (single click, try iframe, fallback to new tab)
+    const robotBubble = document.getElementById('robot-bubble');
+    const robotModalBackdrop = document.getElementById('robot-modal-backdrop');
+    const robotModalCloseBtn = document.getElementById('robot-modal-close-btn');
+    robotBubble.onclick = (e) => {
+      e.preventDefault();
+      robotModalBackdrop.classList.add('active');
+      robotModalCloseBtn.focus();
+      document.body.style.overflow = 'hidden';
+
+      // Check if iframe loaded successfully (fallback if blocked)
+      const iframe = document.getElementById('rayyan-gpt-iframe');
+      const fallback = document.getElementById('iframe-blocked');
+      iframe.style.display = '';
+      fallback.style.display = 'none';
+
+      let loaded = false;
+      function maybeShowFallback() {
+        if (!loaded) {
+          iframe.style.display = 'none';
+          fallback.style.display = 'block';
+        }
+      }
+      // Try to detect if the iframe is blocked after a short time
+      iframe.onload = function() {
+        loaded = true;
+        fallback.style.display = 'none';
+        iframe.style.display = '';
+      };
+      setTimeout(maybeShowFallback, 1800); // 1.8 seconds
+    };
+    robotModalCloseBtn.onclick = () => {
+      robotModalBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
+      robotBubble.focus();
+    };
+    robotModalBackdrop.onclick = (e) => {
+      if (e.target === robotModalBackdrop) {
+        robotModalBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+        robotBubble.focus();
+      }
+    };
+    robotModalBackdrop.addEventListener('keydown', (e)=> {
+      if (e.key === 'Escape') {
+        robotModalBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+        robotBubble.focus();
+      }
+    });
+  </script>
+</body>
+</html>
